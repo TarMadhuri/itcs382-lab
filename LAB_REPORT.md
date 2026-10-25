@@ -1,16 +1,16 @@
 # Lab Report, Code Quality and Design Quality
 
-Repository URL:
+Repository URL: https://github.com/TarMadhuri/itcs382-lab
 
 ## Tools
 
 | Item | Version or name |
 | --- | --- |
-| JDK | |
-| Maven | |
-| IDE | |
-| SonarQube for IDE | |
-| AI tool and exact model | |
+| JDK |Java 24.0.1 |
+| Maven | Apache Maven 3.9.16|
+| IDE | Visual Studio Code 1.105.1 (Universal)|
+| SonarQube for IDE | 6.2.0 (sonarsource.sonarlint-vscode)|
+| AI tool and exact model |ChatGPT / GPT-6 |
 
 ## Task 1. SonarQube on the starter code
 
@@ -98,8 +98,8 @@ The two design problems that you fixed
 
 | Design problem (course term) | What you changed | Commit |
 | --- | --- | --- |
-|incorrect string comparison| Replaced == with .equals() to compare parcel codes correctly.| Not committed yet |
-| Resource management | Used try-with-resources to close FileWriter automatically and added error handling for IOException. | Not committed yet|
+|incorrect string comparison| Replaced == with .equals() to compare parcel codes by value rather than object reference.|ffe1699 |
+| Resource management | Used try-with-resources to close FileWriter automatically and added error handling for IOException. | ffe1699|
 
 Output of the program after your fixes, for the commands `store P1 6501 2`, `pickup P1 5` and `staff`, and the content of parcels.csv:
 
@@ -135,18 +135,22 @@ P1,PICKED_UP
 | Build result | `mvn clean package` — BUILD SUCCESS | `mvn clean package` — BUILD SUCCESS |
 | Test performed | Student M001 rented a bike at Library and returned it at Dorm after 15 minutes. Fee: 30 baht. The ride was saved to `rides.csv`. | Student M001 rented at Library and returned at Dorm after 15 minutes. Fee: 30 baht. Staff M002 rented at Canteen and returned at Library after 10 minutes. Fee: 30 baht. |
 | AI tool / model / date | ChatGPT / GPT-6 / 2026-10-24 | ChatGPT / GPT-6 / 2026-10-24 |
+| AI review findings in Check 1 | 4 findings | 4 findings |
+| AI review findings in Check 2 | 6 findings | 3 findings |
+| Review output file | `reviews/bikeshare-poor-review.md` | `reviews/bikeshare-good-review.md` |
+| AI review date | 2026-10-25 | 2026-10-25 |
 
 **Observations:** The poor design combines responsibilities and exposes shared state, making the program harder to maintain and test. The good design improves separation of concerns, encapsulation, and dependency management through an interface. Potential improvements remain, including handling end-of-input gracefully and preventing inconsistent bike state if saving a ride record fails.
 | Date | 2026-10-24 | 2026-10-24 |
 | AI tool and exact model | ChatGPT / GPT-6 | ChatGPT / GPT-6 |
-| Prompt (B or C as given, or your changed prompt in full) | Prompt B — paste the exact prompt used | Prompt C — paste the exact prompt used |
+| Prompt (B or C as given, or your changed prompt in full) | Prompt B — Write a Java 17 command-line program, built with Maven and with no external library, for the specification below. Give it a poor design on purpose. Put the menu, the fee rules, the bike records and the file saving into as few classes as possible, keep shared data in public static fields, use int codes for the member types, and pass a boolean flag that changes what a method does. Keep the code itself tidy, so close every file, handle every exception and leave no unused code. Keep the program short. Give me the pom.xml and every Java file. | Prompt C — Write a Java 17 command-line program, built with Maven and with no external library, for the specification below. Design it for high cohesion and low coupling. Give each class one responsibility, keep every field private, pass each method only the data it needs, use an enum for the member types, hide the file saving behind an interface, and keep the menu apart from the classes that hold the rules. Keep the code tidy and the program short. Give me the pom.xml and every Java file. |
 | Builds with mvn package (yes or no) | Yes | Yes |
-| Number of classes, interfaces, enums and records | Not counted yet | Not counted yet |
+| Number of classes, interfaces, enums and records | 2 classes | 6 classes, 1 interface, 2 enums (9 types total) |
 | SonarQube issues, total | Not checked | Not checked |
 | SonarQube issues, by rule | Not checked | Not checked |
-| AI review findings in Check 1 | Not completed / not recorded | Not completed / not recorded |
-| AI review findings in Check 2 | Not completed / not recorded | Not completed / not recorded |
-| Review output file in the reviews folder | Not confirmed | Not confirmed |
+| AI review findings in Check 1 | 4 findings | 4 findings |
+| AI review findings in Check 2 | 6 findings | 3 findings |
+| Review output file in the reviews folder | `reviews/bikeshare-poor-review.md` | `reviews/bikeshare-good-review.md` |
 
 4.1 Did SonarQube report any cohesion or coupling problem in bikeshare-poor? Quote the rule and the message if it did.
 SonarQube results have not been verified, so I cannot confirm a specific rule or quote its exact message. The design of bikeshare-poor combines multiple responsibilities in one class, which may indicate low cohesion and make the code harder to maintain.
@@ -155,7 +159,7 @@ SonarQube results have not been verified, so I cannot confirm a specific rule or
 Yes. In bikeshare-poor, Main.java combines menu handling, bike management, rental and return logic, and CSV file saving in one class. In contrast, bikeshare-good separates these responsibilities into service, model, and repository classes.
 
 4.3 Which version would you rather extend with a new member type, such as a visitor who pays 4 baht per minute, and why?
- would choose bikeshare-good because it uses a MemberType enum and separates business logic from the user interface and file storage. Adding a visitor type with a rate of 4 baht per minute would be easier to implement, test, and maintain. In bikeshare-poor, integer member-type codes and combined responsibilities would make the changes more difficult and increase the risk of errors.
+ I would choose bikeshare-good because it uses a MemberType enum and separates business logic from the user interface and file storage. Adding a visitor type with a rate of 4 baht per minute would be easier to implement, test, and maintain. In bikeshare-poor, integer member-type codes and combined responsibilities would make the changes more difficult and increase the risk of errors.
 
 ## Task 5. Reflection
 
